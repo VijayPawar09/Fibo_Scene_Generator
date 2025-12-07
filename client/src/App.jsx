@@ -21,19 +21,16 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <NavBar />
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
             path="/generate"
             element={<Generate apiBase={API_BASE} onAddHistory={addHistory} />}
           />
-          <Route
-            path="/history"
-            element={<HistoryPage items={history} />}
-          />
+          <Route path="/history" element={<HistoryPage items={history} />} />
         </Routes>
       </div>
     </div>
