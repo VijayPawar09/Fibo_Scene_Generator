@@ -1,5 +1,5 @@
 import express from "express";
-import { convertPromptToJSON } from "../controller/jsonconvertController.js";
+import { convertPromptToJSON } from "../controller/jsonConvertController.js";
 
 const router = express.Router();
 

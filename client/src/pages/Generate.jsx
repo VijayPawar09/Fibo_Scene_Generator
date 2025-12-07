@@ -4,6 +4,7 @@ export default function Generate({ apiBase, onAddHistory }) {
   const [prompt, setPrompt] = useState("");
   const [size, setSize] = useState("1024x1024");
   const [image, setImage] = useState("");
+  const [generatedJson, setGeneratedJson] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -14,7 +15,7 @@ export default function Generate({ apiBase, onAddHistory }) {
     setImage("");
 
     try {
-      const res = await fetch(`${apiBase}/generate`, {
+      const res = await fetch(`${apiBase}/fibo/generate-from-prompt`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, size }),
@@ -24,7 +25,8 @@ export default function Generate({ apiBase, onAddHistory }) {
         throw new Error(data?.message || "Generation failed");
       }
       setImage(data.image);
-      onAddHistory?.({ prompt, imageUrl: data.image });
+      setGeneratedJson(data.json || null);
+      onAddHistory?.({ prompt, imageUrl: data.image, json: data.json || null });
     } catch (e) {
       setError(e.message || "Something went wrong");
     } finally {
@@ -188,6 +190,16 @@ export default function Generate({ apiBase, onAddHistory }) {
               {image && (
                 <div className="mt-6 p-3 bg-green-500/10 border border-green-500/30 rounded-lg text-green-200 text-xs text-center">
                   ✅ Image generated successfully! Right-click to save or copy.
+                </div>
+              )}
+
+              {/* Generated JSON Preview */}
+              {generatedJson && (
+                <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-lg text-xs text-left text-purple-100">
+                  <div className="font-semibold mb-2">Generated JSON</div>
+                  <pre className="whitespace-pre-wrap text-[12px] max-h-48 overflow-auto">
+                    {JSON.stringify(generatedJson, null, 2)}
+                  </pre>
                 </div>
               )}
             </div>
