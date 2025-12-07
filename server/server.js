@@ -24,6 +24,11 @@ app.use("/api/fibo", fiboRoutes);
 app.use("/api/prompt", jsonConvertRoutes);
 app.use("/api/history", historyRoutes);
 
+// Root health-check
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
+
 // POST /api/generate
 app.post("/api/generate", async (req, res) => {
   try {
