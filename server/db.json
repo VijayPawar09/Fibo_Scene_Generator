@@ -17,6 +17,24 @@
       },
       "imageUrl": "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1024&h=1024&fit=crop",
       "createdAt": "2025-12-07T15:13:13.379Z"
+    },
+    {
+      "id": 2,
+      "prompt": "image",
+      "json": {
+        "scene": "image",
+        "camera": {
+          "angle": "front"
+        },
+        "lighting": {
+          "type": "soft"
+        },
+        "color_palette": {
+          "preset": "natural"
+        }
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1024&h=1024&fit=crop",
+      "createdAt": "2025-12-07T15:17:38.127Z"
     }
   ]
 }
