@@ -2,16 +2,24 @@ import express from "express";
 import cors from "cors";
 import axios from "axios";
 import dotenv from "dotenv";
+import morgan from "morgan";
 import fiboRoutes from "./routes/fiboRoutes.js";
 import jsonConvertRoutes from "./routes/jsonConvertRoutes.js";
 import historyRoutes from "./routes/historyRoutes.js"
 import OpenAI from "openai";
+import logger from "./logger.js";
 
 dotenv.config();
 
 const app = express();
+
+// request logging
+app.use(morgan('combined', { stream: { write: (msg) => logger.info(msg.trim()) } }))
+
 app.use(cors());
 app.use(express.json());
+
+// Routes
 app.use("/api/fibo", fiboRoutes);
 app.use("/api/prompt", jsonConvertRoutes);
 app.use("/api/history", historyRoutes);
@@ -76,7 +84,7 @@ app.post("/api/generate", async (req, res) => {
     return res.json({ success: true, image, status: "completed" });
 
   } catch (err) {
-    console.error("/api/generate error:", err.response?.data || err.message);
+    logger.error(`/api/generate error: ${err.response?.data || err.message}`)
     return res.status(500).json({
       success: false,
       message: "Generation failed",
@@ -85,6 +93,13 @@ app.post("/api/generate", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+// global error handler
+app.use((err, req, res, next) => {
+  logger.error(`Unhandled error: ${err.stack || err}`)
+  res.status(500).json({ success: false, message: 'Internal server error' })
+})
+
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => {
+  logger.info(`Server running on http://localhost:${PORT}`)
 });
